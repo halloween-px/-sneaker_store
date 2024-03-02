@@ -1,39 +1,49 @@
 <script>
 import axios from "axios";
 
-const path = "https://43613f267f4ff091.mokky.dev/items";
-const getData = async (url) => {
+const products = "https://43613f267f4ff091.mokky.dev/items";
+const favorites = "https://43613f267f4ff091.mokky.dev/favorites";
+const getData = async (url, params) => {
   try{
-    const {data} = await axios.get(url)
+    const {data} = await axios.get(url, params)
     return data;
   }
   catch (err) {
-    console.log(err)
+    console.log(err);
   }
 }
 
-export const getProduct = async (id) => {
-  return await getData(`${path}/${id}`);
+const postData = async (url, params) => {
+  try{
+    const {data} = await axios.post(url, params)
+    return data;
+  }
+  catch (err) {
+    console.log(err);
+  }
+}
+
+export const deleteFavorite = async (id) => {
+  await axios.delete(`${favorites}/${id}`)
 }
 
 export const getProducts = async () => {
-  return await getData(path);
+  return await getData(products);
+}
+
+export const getFavorites = async () => {
+  return await getData(favorites)
+}
+
+export const postFavorites = async (params) => {
+  return await postData(favorites, params)
 }
 
 export const filtersProduct = async (filter, sort) => {
   const prefix = filter ? '&' : '';
   const title = filter ? `title=*${filter}*` : '';
   const sorting = sort ? `${prefix}sortBy=${sort}` : '';
-  return await getData(`${path}?${title}${sorting}`);
-}
-
-export const sortProduct = async (sort) => {
-  return await getData(`${path}?sortBy=${sort}`);
-}
-
-export const searchProduct = async (value, sort) => {
-  const sorting = sort ? `&sortBy=${sort}` : '';
-  return await getData(`${path}?title=*${value}*${sorting}`);
+  return await getData(`${products}?${title}${sorting}`);
 }
 
 export const searchKeyWord = (items, value) => {

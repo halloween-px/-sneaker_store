@@ -1,8 +1,8 @@
 <script setup>
 import Header from "@/components/layouts/Header.vue";
 import CartList from "@/components/product/CardList.vue";
-import {onMounted, reactive, ref, watch} from "vue";
-import {getProducts, sortProduct, filtersProduct, searchProduct, searchKeyWord} from "@/data/products.vue";
+import {onMounted, reactive, provide, ref, watch} from "vue";
+import {getProducts, filtersProduct, getFavorites, deleteFavorite, postFavorites, searchKeyWord} from "@/data/products.vue";
 import Select from "@/components/shared/Select.vue";
 import Search from "@/components/shared/Search.vue";
 
@@ -12,9 +12,32 @@ const filters = reactive({
   filter: '',
 });
 
-onMounted(async () => {
+const fetchFavorites = async () => {
+  const favorites = await getFavorites();
+  products.value = products.value?.map((product) => {
+    const favorite = favorites.find(favorite => favorite.productId === product.id);
+    if(!favorite) return product;
+    return {
+      ...product,
+      isFavorite: true,
+      favoriteId: favorite.id
+    }
+  })
+}
+const fetchProducts = async () => {
   products.value = await getProducts();
-})
+}
+
+const addToFavorites = async (product) => {
+  if(!product.isFavorite) {
+    product.isFavorite = true;
+    const favorite = await postFavorites({productId: product.id});
+    product.favoriteId = favorite.id;
+  } else {
+    product.isFavorite = false;
+    await deleteFavorite(product.favoriteId);
+  }
+}
 const onSelectChange = (event) => {
   filters.sort = event.target.value;
 }
@@ -26,12 +49,19 @@ const onSort = async () => {
   searchKeyWord(products, filters.filter)
 }
 
-watch(filters, onSort)
+onMounted(async () => {
+  await fetchProducts();
+  await fetchFavorites();
+})
+
+watch(filters, onSort);
+
+provide('addToFavorites', addToFavorites)
 
 </script>
 
 <template>
-  <div class="bg-white w-3/5 m-auto rounded-xl shadow-xl shadow-grey-200 mt-20">
+  <div class="bg-white w-3/5 m-auto rounded-xl main-2 shadow-xl shadow-grey-200 mt-20">
     <Header />
     <div class="p-10">
       <div class="flex justify-between items-center mb-10">
@@ -42,7 +72,10 @@ watch(filters, onSort)
         </div>
       </div>
       <div class="mt-5">
-        <CartList :products="products" />
+        <CartList
+            :products="products"
+            @addToFavorites="addToFavorites"
+        />
       </div>
     </div>
   </div>

@@ -1,22 +1,32 @@
 <script setup>
+
 defineProps({
+  id: Number,
   title: String,
   imageUrl: String,
   price: String,
   isAdded: Boolean,
-  isFavorite: Boolean
+  isFavorite: Boolean,
+  addToFavorites: Function,
+  addToCard: Function,
 })
+
 </script>
 
 <template>
+
   <div
       class="relative bg-white border border-slate-100 rounded-3xl p-8 cursor-pointer transition hover:-translate-y-2 hover:shadow-xl"
   >
-    <img
-        :src="isFavorite ? '/like-2.svg' : '/like-1.svg'"
-        alt="Like 1"
-        class="absolute top-8 left-8"
-    />
+    <button type="button"
+            class="absolute top-8 left-8"
+            @click="addToFavorites"
+    >
+      <img
+          :src="isFavorite ? '/like-2.svg' : '/like-1.svg'"
+          alt="Like 1"
+      />
+    </button>
 
     <img :src="imageUrl" alt="Sneaker" />
 
@@ -28,10 +38,12 @@ defineProps({
         <b>{{ price }} руб.</b>
       </div>
 
-      <img
-          :src="isAdded ? '/checked.svg' : '/plus.svg'"
-          alt="Plus"
-      />
+      <button type="button">
+        <img
+            :src="isAdded ? '/checked.svg' : '/plus.svg'"
+            alt="Plus"
+        />
+      </button>
     </div>
   </div>
 </template>
