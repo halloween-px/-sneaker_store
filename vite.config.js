@@ -10,6 +10,7 @@ export default defineConfig({
     vue(),
     vueJsx(),
   ],
+  publicPath: process.env.NODE_ENV === "production" ? "/REPO_NAME/" : "/",
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
