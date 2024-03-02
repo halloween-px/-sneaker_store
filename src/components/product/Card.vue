@@ -23,7 +23,7 @@ defineProps({
             @click="addToFavorites"
     >
       <img
-          :src="isFavorite ? '/like-2.svg' : '/like-1.svg'"
+          :src="isFavorite ? '/-sneaker_store/like-2.svg' : '/-sneaker_store/like-1.svg'"
           alt="Like 1"
       />
     </button>
@@ -40,7 +40,7 @@ defineProps({
 
       <button type="button">
         <img
-            :src="isAdded ? '/checked.svg' : '/plus.svg'"
+            :src="isAdded ? '/-sneaker_store/checked.svg' : '/-sneaker_store/plus.svg'"
             alt="Plus"
         />
       </button>
