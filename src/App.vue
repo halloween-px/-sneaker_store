@@ -1,10 +1,10 @@
 <script setup>
-
-import Home from "@/components/Home.vue";
-import Sidebar from "@/components/cart/Cart.vue";
+import MainProvider from "@/provider/MainProvider.vue";
+import MainLayout from "@/components/layouts/MainLayout.vue";
 </script>
 
 <template>
-<!--  <Sidebar/>-->
-  <Home />
+  <MainProvider>
+    <MainLayout/>
+  </MainProvider>
 </template>

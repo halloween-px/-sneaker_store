@@ -1,22 +1,21 @@
 <script setup>
 import CartItem from "@/components/cart/CartItem.vue";
+import {inject} from "vue";
+
+defineProps({
+  cart: Array
+})
+const {addToCart} = inject('useMainProvider');
 </script>
 <template>
   <div class="flex flex-col gap-5">
     <CartItem
-        title="Мужские Кроссовки Nike Blazer Mid Suede"
-        price="1000"
-        image-url="/sneakers/sneakers-1.jpg"
-    />
-    <CartItem
-        title="Мужские Кроссовки Nike Blazer Mid Suede"
-        price="1000"
-        image-url="/sneakers/sneakers-1.jpg"
-    />
-    <CartItem
-        title="Мужские Кроссовки Nike Blazer Mid Suede"
-        price="1000"
-        image-url="/sneakers/sneakers-1.jpg"
+        v-for="item of cart"
+        :id="item.productId"
+        :title="item.title"
+        :price="Number(item.price)"
+        :image-url="item.imageUrl"
+        :remove-to-cart="() => addToCart(item)"
     />
   </div>
 </template>

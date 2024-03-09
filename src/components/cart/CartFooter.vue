@@ -1,9 +1,15 @@
+<script setup>
+import {inject} from "vue";
+
+const {cartPrice} = inject('useMainProvider');
+</script>
+
 <template>
   <div class="flex flex-col gap-5">
     <div class="flex items-end gap-2">
       <span>Итого:</span>
       <div class="flex-1 border-b border-dashed"/>
-      <span class="font-bold">1000 руб.</span>
+      <span class="font-bold">{{ cartPrice() }} руб.</span>
     </div>
 
     <div class="flex items-end gap-2">

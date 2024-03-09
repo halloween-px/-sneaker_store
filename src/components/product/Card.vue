@@ -4,7 +4,7 @@ defineProps({
   id: Number,
   title: String,
   imageUrl: String,
-  price: String,
+  price: Number,
   isAdded: Boolean,
   isFavorite: Boolean,
   addToFavorites: Function,
@@ -38,7 +38,7 @@ defineProps({
         <b>{{ price }} руб.</b>
       </div>
 
-      <button type="button">
+      <button type="button" @click="addToCard">
         <img
             :src="isAdded ? '/-sneaker_store/checked.svg' : '/-sneaker_store/plus.svg'"
             alt="Plus"
